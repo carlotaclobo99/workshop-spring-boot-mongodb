@@ -13,28 +13,32 @@ import com.mcarlotalobo.workshopmongo.services.exceptions.ObjectNotFoundExceptio
 
 @Service
 public class UserService {
-	
-	//Esta anotação instancia automaticamente 
-	//o objecto UserRepository:
+
+	// Esta anotação instancia automaticamente
+	// o objecto UserRepository:
 	@Autowired
 	private UserRepository repo;
-	
+
 	public List<User> findAll() {
 		return repo.findAll();
 	}
-	
-	 
-	public User findById(String id) { 
-		Optional<User> obj = repo.findById(id); 
-		 return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")); 
+
+	public User findById(String id) {
+		Optional<User> obj = repo.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
 	}
-	
+
 	public User insert(User obj) {
 		return repo.insert(obj);
-}
-	
+	}
+
 	public User fromDTO(UserDTO dto) {
 		User user = new User(dto.getId(), dto.getName(), dto.getEmail());
 		return user;
+	}
+
+	public void delete(String id) {
+		findById(id);
+		repo.deleteById(id);
 	}
 }
